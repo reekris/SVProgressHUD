@@ -216,9 +216,25 @@ CGFloat SVProgressHUDRingThickness = 6;
     BOOL imageUsed = (self.imageView.image) || (self.imageView.hidden);
     
     if(string) {
-        CGSize stringSize = [string sizeWithFont:self.stringLabel.font constrainedToSize:CGSizeMake(1000, 300)];
-        stringWidth = stringSize.width;
-        stringHeight = stringSize.height;
+        CGSize constraintSize = CGSizeMake(200, 300);
+        CGRect stringRect;
+        if ([string respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)]) {
+          stringRect = [string boundingRectWithSize:constraintSize
+                                            options:(NSStringDrawingUsesFontLeading|NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin)
+                                         attributes:@{NSFontAttributeName: self.stringLabel.font}
+                                            context:NULL];
+        } else {
+            CGSize stringSize;
+            #ifdef __IPHONE_8_0
+                stringSize = [string sizeWithAttributes:@{NSFontAttributeName:[UIFont fontWithName:self.stringLabel.font.fontName size:self.stringLabel.font.pointSize]}];
+            #else
+                stringSize = [string sizeWithFont:self.stringLabel.font constrainedToSize:CGSizeMake(200, 300)];
+            #endif
+            stringRect = CGRectMake(0.0f, 0.0f, stringSize.width, stringSize.height);
+        }
+        stringWidth = stringRect.size.width;
+        stringHeight = ceil(stringRect.size.height);
+        
         if (imageUsed)
             hudHeight = 80+stringHeight;
         else
