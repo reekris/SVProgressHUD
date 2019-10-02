@@ -848,6 +848,12 @@ CGFloat SVProgressHUDRingThickness = 6;
     return [UIFont boldSystemFontOfSize:16];
 }
 
+- (NSBundle  *)bundle {
+    NSBundle *bundle = [NSBundle bundleForClass:[SVProgressHUD class]];
+    NSURL *url = [bundle URLForResource:@"SVProgressHUD" withExtension:@"bundle"];
+    return [NSBundle bundleWithURL:url];
+}
+
 - (UIImage *)hudSuccessImage {
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 50000
     if(_uiHudSuccessImage == nil) {
@@ -859,7 +865,7 @@ CGFloat SVProgressHUDRingThickness = 6;
     }
 #endif
 
-    return [UIImage imageNamed:@"SVProgressHUD.bundle/success.png"];
+    return [UIImage imageWithContentsOfFile:[self.bundle pathForResource:@"success" ofType:@"png"]];
 }
 
 - (UIImage *)hudErrorImage {
@@ -873,7 +879,7 @@ CGFloat SVProgressHUDRingThickness = 6;
     }
 #endif
 
-    return [UIImage imageNamed:@"SVProgressHUD.bundle/error.png"];
+    return [UIImage imageWithContentsOfFile:[self.bundle pathForResource:@"error" ofType:@"png"]];
 }
 
 - (SVProgressHUDStyle)hudStyle {
