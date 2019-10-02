@@ -600,7 +600,7 @@ CGFloat SVProgressHUDRingThickness = 6;
     if(!_ringLayer) {
         CGPoint center = CGPointMake(CGRectGetWidth(hudView.frame)/2, CGRectGetHeight(hudView.frame)/2);
         _ringLayer = [self createRingLayerWithCenter:center radius:SVProgressHUDRingRadius lineWidth:SVProgressHUDRingThickness color:[UIColor whiteColor]];
-        [self.hudView.layer addSublayer:_ringLayer];
+        [self.hudView.layer insertSublayer:_ringLayer above:self.backgroundRingLayer];
     }
     return _ringLayer;
 }
